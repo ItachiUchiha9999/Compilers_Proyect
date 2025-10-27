@@ -1,4 +1,5 @@
-if 3 > 2
-    print "ok"
-else
-    print "fail"
+cadena = 2
+if int > 5:
+    print(int)
+else:
+    print hola

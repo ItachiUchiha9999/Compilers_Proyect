@@ -3,55 +3,62 @@ from parser import parser
 
 
 '''
-1. Estructura General 
+1.Estructura General
+Programa             → ListaInstrucciones
 
-Programa -> Instruccion Programa | Instruccion
+ListaInstrucciones   → Instruccion
+                     | Instruccion ListaInstrucciones
 
-Instruccion -> Asignacion | Condicional | Funcion
-'''
+Instruccion          → Asignacion
+                     | Condicional
+                     | Funcion
 
+2.Asignaciones
+Asignacion           → ID ASSIGNMENT Expresion
 
-'''
-2. Asignaciones 
+3.Sentencia de Control
+Condicional          → IF Expresion COLON Bloque Elif_Part Else_Part
 
-Asignacion -> ID ASSIGMENT (EXPRESION)
-'''
+Elif_Part            → ELIF Expresion COLON Bloque
+                     | ε
 
-'''
-3. Sentencia de Control
+Else_Part            → ELSE COLON Bloque
+                     | ε
 
-Condicional -> IF (EXPRESION): Bloque ELIF_PART ELSE_PART
-ELIF_PART -> ELIF (EXPRESION): Bloque | 
-ELSE_PART -> ELSE: Bloque |
-Bloque -> Intruccion | Intruccion Bloque
-'''
+Bloque               → INDENT ListaInstrucciones DEDENT
 
-'''
-4. Funciones 
+4.Funciones
+Funcion              → PRINT LPAREN Expresion RPAREN
+                     | LEN LPAREN ID RPAREN
+                     | MAX LPAREN ID COMMA ID RPAREN
 
-Funcion -> PRINT (EXPRESION)
-           | LEN (ID)
-           | MAX (ID,ID)
-'''
+5.Expresiones o Tipos de Datos
+Expresion            → ExprOr
 
-'''
-5. Expresiones o Tipos de Datos
+ExprOr               → ExprOr OR ExprAnd
+                     | ExprAnd
 
-Expresion -> Expresion Operador Expresion
-            | (EXPRESION)
-            | ID
-            | INT
-            | FLOAT
-            | STRING
-'''
+ExprAnd              → ExprAnd AND ExprNot
+                     | ExprNot
 
-'''
-6. Operadores
+ExprNot              → NOT ExprNot
+                     | ExprComp
 
-Operador -> ASSIGMENT | PLUS | MINUS
-            | MULTIPLY | DIVIDE | AND
-            | OR | NOT | EQUALS | NOT EQUALS
-            | LESS THAN | GREATHER THAN
+ExprComp             → ExprSuma (EQUALS | NOT_EQUALS | LESS_THAN | GREATER_THAN) ExprSuma
+                     | ExprSuma
+
+ExprSuma             → ExprSuma (PLUS | LESS) Termino
+                     | Termino
+
+Termino              → Termino (MULTIPLY | DIVIDE) Factor
+                     | Factor
+
+Factor               → LPAREN Expresion RPAREN
+                     | ID
+                     | INT
+                     | FLOAT
+                     | STRING
+         
 '''
 
 route = 'test/text.txt'
