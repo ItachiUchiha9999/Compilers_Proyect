@@ -1,5 +1,0 @@
-cadena = 2
-if int > 5:
-    print(int)
-else:
-    print hola

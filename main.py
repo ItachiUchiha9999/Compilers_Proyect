@@ -61,20 +61,39 @@ Factor               → LPAREN Expresion RPAREN
          
 '''
 
-route = 'test/text.txt'
+route = 'test/error-lexico.txt'
+#route = 'test/error-sintactico.txt'
+#route = 'test/sin-errores.txt'
 
-def file_anayzer(route):
-    try:   
-        with open(route, 'r') as file:
-            data = file.read()
-    
-        print('-> Analisis Lexico y Sintactico <-')
-        result = parser.parse(data, lexer=lexer)
-        print('\nAnalisis completed successfully')
-    except FileNotFoundError:
-        print(f'Error, no found file in route: "{route}"')
+def file_analyzer(route):
+    try:
+        with open(route) as file:
+            data = file.read().strip()
+            if not data:
+                print("El archivo está vacío")
+                return
+
+            lexer.input(data)
+
+            print("\n Análisis Léxico:")
+            for tok in iter(lexer.token, None):
+                print(f"-> {tok.type}: '{tok.value}' (Línea {tok.lineno})")
+
+            print("\n Análisis Sintáctico:")
+            result = parser.parse(data, lexer=lexer)
+            print("\n Análisis completado sin errores")
+            print(" Resultado del parser:", result)
+
+    except SystemExit:
+        pass
+    except (FileNotFoundError, SyntaxError) as e:
+        print(f"\n {e}")
     except Exception as e:
-        print(f'Error during parsing {e}')
+        print(f"\n Error inesperado: {e}")
 
-if __name__ == '__main__':
-    file_anayzer(route)
+if __name__ == "__main__":
+    file_analyzer(route)
+
+#Aclaracion 
+
+#Solamente trabajar con los tokens dados en el pdf tema no agregar mas tokens porque me invalidan en tp

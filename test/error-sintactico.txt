@@ -1,0 +1,9 @@
+## Programa con error sintáctico
+
+x = 10
+y = 20
+
+if x > y
+    print "x es mayor"
+else
+    print "y es mayor"

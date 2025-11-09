@@ -1,5 +1,6 @@
 import ply.lex as lex
 
+
 # ==============================
 # LISTA DE TOKENS
 # ==============================
@@ -9,7 +10,6 @@ Reserved = {
     'elif': 'ELIF',
     'else': 'ELSE',
     'print': 'PRINT',
-    'while': 'WHILE',
     'len': 'LEN',
     'max': 'MAX',
     'and': 'AND',
@@ -22,21 +22,18 @@ Operators = [
     'MINUS',
     'MULTIPLY',
     'DIVIDE',
-    'PTCOMA',
     'MAYQ',
     'MENQ',
     'DIST',
     'EQ',
+    'ASSIGN',
 ]
 
 tokens = [
     'ID',
-    'COMMENT',
     'INT',
     'FLOAT',
     'STRING',
-    'LPAREN',
-    'RPAREN',
 ] + list(Reserved.values()) + Operators
 
 # ==============================
@@ -47,13 +44,11 @@ t_PLUS      = r'\+'
 t_MINUS     = r'-'
 t_MULTIPLY  = r'\*'
 t_DIVIDE    = r'/'
-t_PTCOMA    = r';'
-t_MAYQ      = r'>'
-t_MENQ      = r'<'
 t_DIST      = r'!='
 t_EQ        = r'=='
-t_LPAREN    = r'\('
-t_RPAREN    = r'\)'
+t_ASSIGN    = r'='
+t_MAYQ      = r'>'
+t_MENQ      = r'<'
 
 
 t_ignore = ' \t'
@@ -83,7 +78,8 @@ def t_ID(t):
     return t
 
 def t_COMMENT(t):
-    r'\#.*'
+    r'\#\#.*'
+    t.lexer.lineno += 1
     pass
 
 def t_newline(t):
@@ -91,11 +87,19 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 def t_error(t):
-    print(f"Error: carácter inválido '{t.value[0]}'")
+    print(f"⛔ Error léxico en línea {t.lineno}: carácter inválido '{t.value[0]}'")
     t.lexer.skip(1)
+    raise SystemExit  # 🔥 Esto hace que se detenga completamente al primer error
 
 # ==============================
 # CONSTRUCCIÓN
 # ==============================
 
-lexer = lex.lex(optimize=1)
+lexer = lex.lex()
+
+
+if __name__ == '__main__':
+    # When this module is run directly, print a short confirmation.
+    # When imported (e.g. `from lexer import lexer`) these prints won't run.
+    print("Lexer cargado correctamente con tokens:")
+    print(tokens)

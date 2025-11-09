@@ -1,0 +1,19 @@
+## Programa sin errores léxicos ni sintácticos
+
+x = 10
+y = 20
+mensaje = "El mayor es:"
+
+if x > y
+    print mensaje
+    print x
+else
+    print mensaje
+    print y
+
+longitud = len mensaje
+maximo = max x y
+print "Longitud del mensaje:"
+print longitud
+print "Máximo valor:"
+print maximo

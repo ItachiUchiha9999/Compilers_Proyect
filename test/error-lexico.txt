@@ -1,0 +1,6 @@
+## Programa con error léxico
+
+x = 10
+y = 5
+resultado = x $ y     ## el símbolo $ no es válido
+print resultado
